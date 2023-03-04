@@ -14,10 +14,10 @@ class AddressZipCodeObserver
     public function creating(Address $address): void
     {
         if (
-            !array_key_exists('street', $address->toArray()) ||
-            !array_key_exists('neighborhood', $address->toArray()) ||
-            !array_key_exists('city', $address->toArray()) ||
-            !array_key_exists('state', $address->toArray())
+            ! array_key_exists('street', $address->toArray()) ||
+            ! array_key_exists('neighborhood', $address->toArray()) ||
+            ! array_key_exists('city', $address->toArray()) ||
+            ! array_key_exists('state', $address->toArray())
         ) {
             $brazilApiInfo = BrazilAPI::getAddressFromCep($address->zip_code);
 

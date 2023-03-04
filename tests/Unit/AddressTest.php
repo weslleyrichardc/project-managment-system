@@ -28,7 +28,7 @@ class AddressTest extends TestCase
                 'city' => $address->city,
                 'state' => $address->state,
                 'zip_code' => $address->zip_code,
-                'user_id' => $address->user_id
+                'user_id' => $address->user_id,
             ]);
 
         $this->assertDatabaseHas('addresses', $address->toArray());
@@ -51,7 +51,7 @@ class AddressTest extends TestCase
             'city' => $address->city,
             'state' => $address->state,
             'zip_code' => $address->zip_code,
-            'user_id' => $address->user_id
+            'user_id' => $address->user_id,
         ]);
 
         $this->assertDatabaseMissing('addresses', $address->toArray());
@@ -75,7 +75,7 @@ class AddressTest extends TestCase
                 'city' => $address->city,
                 'state' => $address->state,
                 'zip_code' => $address->zip_code,
-                'user_id' => $address->user_id
+                'user_id' => $address->user_id,
             ]);
 
         $this
@@ -101,12 +101,43 @@ class AddressTest extends TestCase
             'city' => $newAddress->city,
             'state' => $newAddress->state,
             'zip_code' => $newAddress->zip_code,
-            'user_id' => $newAddress->user_id
+            'user_id' => $newAddress->user_id,
         ]);
 
         $this
             ->assertDatabaseHas('addresses', $address->toArray())
             ->assertDatabaseMissing('addresses', $newAddress->toArray());
+
+        $response
+            ->assertJsonStructure(['message'])
+            ->assertUnauthorized();
+    }
+
+    /**
+     * Test the deletion of an existing address
+     */
+    public function test_can_delete_address(): void
+    {
+        $address = Address::factory()->create();
+
+        $response = $this->actingAs(User::findOrFail($address->user_id))
+            ->deleteJson("/api/addresses/{$address->id}");
+
+        $this->assertDatabaseMissing('addresses', $address->toArray());
+
+        $response->assertNoContent();
+    }
+
+    /**
+     * Test the deletion of an existing address without being logged in
+     */
+    public function test_cannot_delete_address_without_being_logged_in(): void
+    {
+        $address = Address::factory()->create();
+
+        $response = $this->deleteJson("/api/addresses/{$address->id}");
+
+        $this->assertDatabaseHas('addresses', $address->toArray());
 
         $response
             ->assertJsonStructure(['message'])
@@ -124,7 +155,7 @@ class AddressTest extends TestCase
             ->postJson('/api/addresses', [
                 'number' => $address->number,
                 'zip_code' => '11707320',
-                'user_id' => $address->user_id
+                'user_id' => $address->user_id,
             ]);
 
         $response->assertCreated();
@@ -141,7 +172,7 @@ class AddressTest extends TestCase
             ->postJson('/api/addresses', [
                 'number' => $address->number,
                 'zip_code' => '00000000',
-                'user_id' => $address->user_id
+                'user_id' => $address->user_id,
             ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
