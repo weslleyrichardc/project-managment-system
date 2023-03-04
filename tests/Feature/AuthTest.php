@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -35,8 +34,9 @@ class AuthTest extends TestCase
     {
         $response = $this->postJson('/api/register', []);
 
-        $response->assertJsonValidationErrors(['name', 'email', 'password']);
-        $response->assertUnprocessable();
+        $response
+            ->assertJsonValidationErrors(['name', 'email', 'password'])
+            ->assertUnprocessable();
     }
 
     /**
@@ -51,8 +51,9 @@ class AuthTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertJsonStructure(['token', 'token_type', 'expires_in']);
-        $response->assertCreated();
+        $response
+            ->assertJsonStructure(['token', 'token_type', 'expires_in'])
+            ->assertCreated();
     }
 
     /**
@@ -62,8 +63,9 @@ class AuthTest extends TestCase
     {
         $response = $this->postJson('/api/login', []);
 
-        $response->assertJsonValidationErrors(['email', 'password']);
-        $response->assertUnprocessable();
+        $response
+            ->assertJsonValidationErrors(['email', 'password'])
+            ->assertUnprocessable();
     }
 
     /**
@@ -77,8 +79,9 @@ class AuthTest extends TestCase
             'Authorization' => 'Bearer '.auth()->login($user),
         ]);
 
-        $response->assertJsonStructure(['message']);
-        $response->assertOk();
+        $response
+            ->assertJsonStructure(['message'])
+            ->assertOk();
     }
 
     /**
@@ -92,7 +95,8 @@ class AuthTest extends TestCase
             'Authorization' => 'Bearer '.auth()->login($user),
         ]);
 
-        $response->assertJsonStructure(['user', 'token', 'token_type', 'expires_in']);
-        $response->assertOk();
+        $response
+            ->assertJsonStructure(['user', 'token', 'token_type', 'expires_in'])
+            ->assertOk();
     }
 }
