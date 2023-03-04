@@ -22,12 +22,12 @@ class StoreAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'street' => ['required', 'string', 'max:255'],
+            'street' => ['sometimes', 'string', 'max:255'],
             'number' => ['required', 'string', 'max:255'],
             'complement' => ['nullable', 'string', 'max:255'],
-            'neighborhood' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
-            'state' => ['required', 'string', 'max:255'],
+            'neighborhood' => ['sometimes', 'string', 'max:255'],
+            'city' => ['sometimes', 'string', 'max:255'],
+            'state' => ['sometimes', 'string', 'max:255'],
             'zip_code' => ['required', 'string', 'max:255'],
         ];
     }

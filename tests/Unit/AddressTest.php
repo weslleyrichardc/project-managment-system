@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class AddressTest extends TestCase
@@ -110,5 +111,39 @@ class AddressTest extends TestCase
         $response
             ->assertJsonStructure(['message'])
             ->assertUnauthorized();
+    }
+
+    /**
+     * Test the BrazilAPI fill the address data when creating a new address with only the zip code and number
+     */
+    public function test_can_fill_address_data_when_creating_address_with_zip_code(): void
+    {
+        $address = Address::factory()->make();
+
+        $response = $this->actingAs(User::findOrFail($address->user_id))
+            ->postJson('/api/addresses', [
+                'number' => $address->number,
+                'zip_code' => '11707320',
+                'user_id' => $address->user_id
+            ]);
+
+        $response->assertCreated();
+    }
+
+    /**
+     * Test the BrazilAPI fails when the zip code is invalid
+     */
+    public function test_cannot_fill_address_data_when_creating_address_with_invalid_zip_code(): void
+    {
+        $address = Address::factory()->make();
+
+        $response = $this->actingAs(User::findOrFail($address->user_id))
+            ->postJson('/api/addresses', [
+                'number' => $address->number,
+                'zip_code' => '00000000',
+                'user_id' => $address->user_id
+            ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
