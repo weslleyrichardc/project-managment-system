@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\{AuthController, AddressController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +17,13 @@ Route::controller(AuthController::class)
         Route::post('register', 'register')->withoutMiddleware('auth:api');
         Route::post('logout', 'logout');
         Route::post('refresh', 'refresh');
+    });
+
+Route::controller(AddressController::class)
+    ->name('addresses')
+    ->middleware('auth:api')
+    ->group(function () {
+        Route::post('addresses', 'store');
+        Route::put('addresses/{address}', 'update');
+        Route::delete('addresses/{address}', 'destroy');
     });
