@@ -14,7 +14,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return response()->json(Task::where('user_id', auth()->id()), Response::HTTP_OK);
+        return response()->json(auth()->user()->tasks()->get(), Response::HTTP_OK);
     }
 
     /**

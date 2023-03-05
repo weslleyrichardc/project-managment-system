@@ -14,7 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return response()->json(Project::where('user_id', auth()->id()), Response::HTTP_OK);
+        return response()->json(Project::where('user_id', auth()->id())->get(), Response::HTTP_OK);
     }
 
     /**

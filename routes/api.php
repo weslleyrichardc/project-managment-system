@@ -31,7 +31,9 @@ Route::middleware('auth:api')
         Route::controller(ProjectController::class)
             ->prefix('projects')
             ->group(function () {
+                Route::get('', 'index');
                 Route::post('', 'store');
+                Route::get('{project}', 'show');
                 Route::put('{project}', 'update');
                 Route::delete('{project}', 'destroy');
             });
@@ -39,7 +41,9 @@ Route::middleware('auth:api')
         Route::controller(TaskController::class)
             ->prefix('tasks')
             ->group(function () {
+                Route::get('', 'index');
                 Route::post('', 'store');
+                Route::get('{task}', 'show');
                 Route::put('{task}', 'update');
                 Route::delete('{task}', 'destroy');
             });
