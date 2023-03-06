@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Response;
 
@@ -14,7 +15,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return response()->json(auth()->user()->tasks()->get(), Response::HTTP_OK);
+        return response()->json(
+            TaskResource::collection(auth()->user()->tasks),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -33,7 +37,10 @@ class TaskController extends Controller
 
         $task = Task::create($taskData);
 
-        return response()->json($task, Response::HTTP_CREATED);
+        return response()->json(
+            (new TaskResource($task))->only('id', 'name', 'description'),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
@@ -41,7 +48,10 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return response()->json($task, Response::HTTP_OK);
+        return response()->json(
+            new TaskResource($task),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -53,7 +63,10 @@ class TaskController extends Controller
         $taskData['user_id'] = auth()->id();
         $task->update($taskData);
 
-        return response()->json($task, Response::HTTP_OK);
+        return response()->json(
+            new TaskResource($task),
+            Response::HTTP_OK
+        );
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class AuthController extends Controller
         return response()->json(
             [
                 'message' => 'User created successfully',
-                'user' => $user,
+                'user' => new UserResource($user),
                 'token' => $token,
                 'token_type' => 'bearer',
             ],
@@ -68,7 +69,7 @@ class AuthController extends Controller
     public function refresh()
     {
         return response()->json([
-            'user' => Auth::user(),
+            'user' => new UserResource(Auth::user()),
             'token_type' => 'bearer',
             'token' => Auth::refresh(),
             'expires_in' => auth()->factory()->getTTL() * 60,

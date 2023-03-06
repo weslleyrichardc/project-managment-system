@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Response;
 
@@ -14,7 +15,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return response()->json(Project::where('user_id', auth()->id())->get(), Response::HTTP_OK);
+        return response()->json(
+            ProjectResource::collection(auth()->user()->projects),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -27,7 +31,10 @@ class ProjectController extends Controller
 
         $project = Project::create($projectData);
 
-        return response()->json($project, Response::HTTP_CREATED);
+        return response()->json(
+            (new ProjectResource($project))->only('id', 'name', 'description'),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
@@ -35,7 +42,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return response()->json($project, Response::HTTP_OK);
+        return response()->json(
+            new ProjectResource($project),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -47,7 +57,10 @@ class ProjectController extends Controller
         $projectData['user_id'] = auth()->id();
         $project->update($projectData);
 
-        return response()->json($project, Response::HTTP_OK);
+        return response()->json(
+            (new ProjectResource($project))->only('id', 'name', 'description'),
+            Response::HTTP_OK
+        );
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
+use App\Http\Resources\AddressResource;
 use App\Models\Address;
 use Illuminate\Http\Response;
 
@@ -25,7 +26,10 @@ class AddressController extends Controller
 
         $address = Address::create($addressData);
 
-        return response()->json($address, Response::HTTP_CREATED);
+        return response()->json(
+            new AddressResource($address),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
@@ -35,7 +39,10 @@ class AddressController extends Controller
     {
         $address->update($request->validated());
 
-        return response()->json($address, Response::HTTP_OK);
+        return response()->json(
+            new AddressResource($address),
+            Response::HTTP_OK
+        );
     }
 
     /**

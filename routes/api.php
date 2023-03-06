@@ -4,6 +4,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,10 @@ Route::middleware('auth:api')
         Route::controller(AuthController::class)
             ->name('auth')
             ->group(function () {
-                Route::get('user', fn (Request $request) => $request->user());
+                Route::get(
+                    'user',
+                    fn (Request $request) => new UserResource($request->user())
+                );
                 Route::post('login', 'login')->withoutMiddleware('auth:api');
                 Route::post('register', 'register')->withoutMiddleware('auth:api');
                 Route::post('logout', 'logout');
