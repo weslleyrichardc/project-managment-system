@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Projetos
 
-    Este sistema de gerenciamento de projetos foi desenvolvida com Laravel 10, MySQL e BrazilAPI. Com ele, os usuários podem criar projetos, adicionar tarefas. O sistema utiliza autenticação JWT para garantir a segurança dos dados e proteger os endpoints de acesso não autorizado. A documentação usando o postman, juntamente com testes automatizados, garante a qualidade do código e a facilidade de manutenção. Com este sistema, os usuários podem gerenciar seus projetos.
+Este sistema de gerenciamento de projetos foi desenvolvida com Laravel 10, MySQL e BrazilAPI. Com ele, os usuários podem criar projetos, adicionar tarefas. O sistema utiliza autenticação JWT para garantir a segurança dos dados e proteger os endpoints de acesso não autorizado. A documentação usando o postman, juntamente com testes automatizados, garante a qualidade do código e a facilidade de manutenção. Com este sistema, os usuários podem gerenciar seus projetos.
 
 ## Tecnologias Utilizadas
 
@@ -31,4 +31,6 @@
     - Criar, visualizar, atualizar e excluir projetos
     - Criar, visualizar, atualizar e excluir tarefas
 
-## [Endpoints](https://elements.getpostman.com/redirect?entityId=248672-8b01a9b4-b9af-4263-966e-1441d92cad77&entityType=collection)
+## Endpoints
+- [Localhost](http://localhost)
+- [Endpoints](https://elements.getpostman.com/redirect?entityId=248672-8b01a9b4-b9af-4263-966e-1441d92cad77&entityType=collection)

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')
     ->group(function () {
         Route::controller(AuthController::class)
-            ->name('auth')
             ->group(function () {
                 Route::get(
                     'user',
@@ -24,7 +23,6 @@ Route::middleware('auth:api')
             });
 
         Route::controller(AddressController::class)
-            ->name('addresses')
             ->prefix('addresses')
             ->group(function () {
                 Route::post('', 'store');
